@@ -3,9 +3,9 @@ using namespace Spire::Doc;
 
 int main() {
 	wstring input_path = DATAPATH;
-	wstring inputFile = input_path + L"Sample.docx";
+	wstring inputFile = input_path + L"IncludingTable.docx";
 	wstring output_path = OUTPUTPATH;
-	wstring outputFile = output_path + L"BetweenParagraphs.docx";
+	wstring outputFile = output_path + L"FromParagraphToTable.docx";
 
 	//Create the first document
 	Document* sourceDocument = new Document();
@@ -17,10 +17,10 @@ int main() {
 	Document* destinationDoc = new Document();
 
 	//Add a section
-	Section* section = destinationDoc->AddSection();
+	Section* destinationSection = destinationDoc->AddSection();
 
-	//Extract content between the first paragraph to the third paragraph
-	ExtractBetweenParagraphs(sourceDocument, destinationDoc, 1, 3);
+	//Extract the content from the first paragraph to the first table
+	ExtractByTable(sourceDocument, destinationDoc, 1, 1);
 
 	//Save the document.
 	destinationDoc->SaveToFile(outputFile.c_str(), FileFormat::Docx);
@@ -30,10 +30,15 @@ int main() {
 	delete destinationDoc;
 }
 
-void ExtractBetweenParagraphs(Document* sourceDocument, Document* destinationDocument, int startPara, int endPara)
+void ExtractByTable(Document* sourceDocument, Document* destinationDocument, int startPara, int tableNo)
 {
-	//Extract the content
-	for (int i = startPara - 1; i < endPara; i++)
+	//Get the table from the source document
+	//Table* table = dynamic_cast<Table*>(sourceDocument->GetSections()->GetItem(0)->GetTables()->GetItem(tableNo - 1));
+	Table* table = dynamic_cast<Table*>(sourceDocument->GetSections()->GetItem(0)->GetTables()->GetItemInTableCollection(tableNo - 1));
+
+	//Get the table index
+	int index = sourceDocument->GetSections()->GetItem(0)->GetBody()->GetChildObjects()->IndexOf(table);
+	for (int i = startPara - 1; i <= index; i++)
 	{
 		//Clone the ChildObjects of source document
 		DocumentObject* doobj = sourceDocument->GetSections()->GetItem(0)->GetBody()->GetChildObjects()->GetItem(i)->Clone();
