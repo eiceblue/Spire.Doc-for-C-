@@ -10,7 +10,7 @@ As an independent Word C++ API, Spire.Doc for C++ doesn't need Microsoft Word to
 
 ### 100% Standalone C++ API
 
-Spire.Doc for C++ is a 100% standalone Word C++ library without requiring Microsoft Word or Microsoft Office to be installed on the system.
+Spire.Doc for C++ is a totally independent C++ Word class library which doesn't require Microsoft Office installed on system.
 
 ### Richest Word Document Features Support
 
